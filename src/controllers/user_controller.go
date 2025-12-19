@@ -5,7 +5,7 @@ import (
 )
 
 func GetUsers(c *gin.Context) {
-	c.JSON(200, gin.H{"Message": "Getting All users"})
+	c.JSON(200, gin.H{"Message": "Getting All available users"})
 }
 func GetUser(c *gin.Context) {
 	json := c.Query("username")
