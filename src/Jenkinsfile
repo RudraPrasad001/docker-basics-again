@@ -1,0 +1,48 @@
+pipeline {
+  agent any
+
+  options { timestamps() }
+
+  environment {
+    IMAGE = "rudraprasad792619/go:latest"
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('CI: Docker available') {
+      steps {
+        sh 'docker version'
+      }
+    }
+
+    stage('CI: Pull image') {
+      steps {
+        sh 'docker pull $IMAGE'
+      }
+    }
+
+    stage('CI: Smoke test container') {
+      steps {
+        sh '''
+          set -e
+          docker rm -f app_ci_test || true
+          docker run -d --name app_ci_test -p 18080:8081 $IMAGE
+          sleep 2
+          docker logs --tail=50 app_ci_test
+          docker rm -f app_ci_test
+        '''
+      }
+    }
+  }
+
+  post {
+    always {
+      sh 'docker system df || true'
+    }
+  }
+}
