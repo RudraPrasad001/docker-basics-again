@@ -9,5 +9,6 @@ func RegisterUserRoutes(r *gin.Engine) {
 	group := r.Group("/users")
 	group.GET("/", controllers.GetUsers)
 	group.GET("/get", controllers.GetUser)
+	group.DELETE("/delete", controllers.DeleteUser)
 
 }

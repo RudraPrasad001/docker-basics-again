@@ -17,3 +17,12 @@ func GetUser(c *gin.Context) {
 		c.JSON(200, gin.H{"Message": message})
 	}
 }
+func DeleteUser(c *gin.Context) {
+	user := c.Query("username")
+	if len(user) == 0 {
+		c.JSON(301, gin.H{"Message": "Cannot find user"})
+	} else {
+		message := "Deleting user " + user
+		c.JSON(200, gin.H{"Message": message})
+	}
+}
